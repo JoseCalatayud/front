@@ -55,7 +55,7 @@
                   <p class="codigo">{{ producto.codigoBarras }}</p>
                   <div class="producto-detalles">
                     <span class="familia">{{ producto.familia }}</span>
-                    <span class="precio">{{ producto.precioVenta | currency:'EUR' }}</span>
+                    <span class="precio">{{ producto.precioVenta | currency:'EUR':'symbol':'1.2-2' }}</span>
                     <span class="stock" [ngClass]="{'stock-bajo': producto.stock < 10}">
                       Stock: {{ producto.stock }}
                     </span>
@@ -116,7 +116,7 @@
                     >
                   </div>
                   <div class="detalle-subtotal">
-                    <span>Subtotal: {{ detalle.subtotal | currency:'EUR' }}</span>
+                    <span>Subtotal: {{ detalle.subtotal | currency:'EUR':'symbol':'1.2-2' }}</span>
                   </div>
                   <button
                     class="btn btn-danger btn-sm"
@@ -129,7 +129,7 @@
 
               <div class="compra-total">
                 <span class="total-label">TOTAL:</span>
-                <span class="total-valor">{{ totalCompra | currency:'EUR' }}</span>
+                <span class="total-valor">{{ totalCompra | currency:'EUR':'symbol':'1.2-2' }}</span>
               </div>
 
               <button

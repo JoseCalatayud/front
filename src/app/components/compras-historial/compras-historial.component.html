@@ -58,7 +58,7 @@
           </div>
           <div class="compra-total">
             <span class="label">Total:</span>
-            <span class="valor">{{ compra.total | currency:'EUR' }}</span>
+            <span class="total-valor">{{ compra.total | currency:'EUR':'symbol':'1.2-2' }}</span>
           </div>
         </div>
 
@@ -85,8 +85,8 @@
                   <div class="articulo-codigo">{{ detalle.codigoBarrasArticulo }}</div>
                 </td>
                 <td class="articulo-cantidad">{{ detalle.cantidad }}</td>
-                <td class="articulo-precio">{{ detalle.precioUnitario | currency:'EUR' }}</td>
-                <td class="articulo-subtotal">{{ detalle.subtotal | currency:'EUR' }}</td>
+                <td class="articulo-precio">{{ detalle.precioUnitario | currency:'EUR':'symbol':'1.2-2' }}</td>
+                <td class="articulo-subtotal">{{ detalle.subtotal | currency:'EUR':'symbol':'1.2-2' }}</td>
               </tr>
             </tbody>
           </table>

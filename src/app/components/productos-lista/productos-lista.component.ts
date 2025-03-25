@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProductoService, Producto } from '../../services/producto.service';
@@ -23,15 +23,18 @@ export class ProductosListaComponent implements OnInit {
   filtroFamilia: string = '';
   familias: string[] = [];
   cantidadSeleccionada: { [key: number]: number } = {};
+  esContextoVentas: boolean = false;
 
   constructor(
     private productoService: ProductoService,
     private authService: AuthService,
     public carritoService: CarritoService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+    this.esContextoVentas = this.router.url.includes('/ventas/productos');
     this.cargarUsuario();
     this.cargarProductos();
   }

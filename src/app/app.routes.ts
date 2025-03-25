@@ -12,6 +12,8 @@ import { VentasHistorialComponent } from './components/ventas-historial/ventas-h
 import { ComprasMenuComponent } from './components/compras-menu/compras-menu.component';
 import { ComprasHistorialComponent } from './components/compras-historial/compras-historial.component';
 import { CompraCrearComponent } from './components/compra-crear/compra-crear.component';
+import { ComprasProductosComponent } from './components/compras-productos/compras-productos.component';
+import { CarritoCompraComponent } from './components/carrito-compra/carrito-compra.component';
 import { AuthGuard } from './guards/auth-guard.guard';
 import { AdminGuard } from './guards/admin.guard';
 
@@ -72,6 +74,16 @@ export const routes: Routes = [
   {
     path: 'compras',
     component: ComprasMenuComponent,
+    canActivate: [AuthGuard, AdminGuard]
+  },
+  {
+    path: 'compras/productos',
+    component: ComprasProductosComponent,
+    canActivate: [AuthGuard, AdminGuard]
+  },
+  {
+    path: 'compras/carrito',
+    component: CarritoCompraComponent,
     canActivate: [AuthGuard, AdminGuard]
   },
   {
