@@ -92,7 +92,7 @@
           </div>
 
           <div class="control-grupo">
-            <label for="precio-{{producto.id}}">Precio de compra (€):</label>
+            <label for="precio-{{producto.precioVenta | currency:'EUR':'symbol':'1.2-2'}}">Precio de compra (€):</label>
             <input
               type="number"
               id="precio-{{producto.id}}"
