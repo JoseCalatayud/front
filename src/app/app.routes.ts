@@ -16,6 +16,9 @@ import { ComprasProductosComponent } from './components/compras-productos/compra
 import { CarritoCompraComponent } from './components/carrito-compra/carrito-compra.component';
 import { AuthGuard } from './guards/auth-guard.guard';
 import { AdminGuard } from './guards/admin.guard';
+import { UsuarioMenuComponent } from './components/usuario-menu/usuario-menu.component';
+import { UsuarioListaComponent } from './components/usuario-lista/usuario-lista.component';
+import { UsuarioCrearComponent } from './components/usuario-crear/usuario-crear.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -94,6 +97,23 @@ export const routes: Routes = [
   {
     path: 'compras/crear',
     component: CompraCrearComponent,
+    canActivate: [AuthGuard, AdminGuard]
+  },
+
+  // Rutas para gestión de usuarios
+  {
+    path: 'usuarios',
+    component: UsuarioMenuComponent,
+    canActivate: [AuthGuard, AdminGuard]
+  },
+  {
+    path: 'usuarios/listar',
+    component: UsuarioListaComponent,
+    canActivate: [AuthGuard, AdminGuard]
+  },
+  {
+    path: 'usuarios/crear',
+    component: UsuarioCrearComponent,
     canActivate: [AuthGuard, AdminGuard]
   },
 

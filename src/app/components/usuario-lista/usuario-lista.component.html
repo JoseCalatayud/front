@@ -1,0 +1,114 @@
+<div class="usuarios-container">
+  <header class="usuarios-header">
+    <h1>Lista de Usuarios</h1>
+    <div class="botones-header">
+      <button class="btn btn-primary" routerLink="/usuarios/crear">Crear Usuario</button>
+      <button class="btn btn-secondary" routerLink="/usuarios">Volver</button>
+    </div>
+  </header>
+
+  <div class="filtros-container">
+    <div class="filtro">
+      <input
+        type="text"
+        placeholder="Buscar por nombre de usuario"
+        class="form-control"
+        [(ngModel)]="filtroUsername"
+        (input)="filtrarUsuarios()"
+      >
+    </div>
+    <div class="filtro">
+      <select
+        class="form-control"
+        [(ngModel)]="filtroRol"
+        (change)="filtrarUsuarios()"
+      >
+        <option value="">Todos los roles</option>
+        <option value="ADMIN">Administrador</option>
+        <option value="USER">Usuario</option>
+      </select>
+    </div>
+    <div class="filtro">
+      <select
+        class="form-control"
+        [(ngModel)]="filtroEstado"
+        (change)="filtrarUsuarios()"
+      >
+        <option value="">Todos los estados</option>
+        <option value="activo">Activos</option>
+        <option value="inactivo">Inactivos</option>
+      </select>
+    </div>
+    <div class="filtro-botones">
+      <button class="btn btn-outline-secondary" (click)="limpiarFiltros()">
+        Limpiar filtros
+      </button>
+      <button class="btn btn-outline-primary" (click)="mostrarTodos ? mostrarSoloActivos() : mostrarTodosUsuarios()">
+        {{ mostrarTodos ? 'Mostrar solo activos' : 'Mostrar todos' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Indicador de carga -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+    <p>Cargando usuarios...</p>
+  </div>
+
+  <!-- Mensaje de error -->
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <!-- Tabla de usuarios -->
+  <div *ngIf="!loading && !error" class="usuarios-tabla-container">
+    <table class="usuarios-tabla">
+      <thead>
+        <tr>
+          <th>Nombre de Usuario</th>
+          <th>Rol</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let usuario of usuariosFiltrados">
+          <td>{{ usuario.username }}</td>
+          <td>
+            <span [ngClass]="{'badge-admin': usuario.rol === 'ADMIN', 'badge-user': usuario.rol === 'USER'}">
+              {{ usuario.rol === 'ADMIN' ? 'Administrador' : 'Usuario' }}
+            </span>
+          </td>
+          <td>
+            <span [ngClass]="{'estado-activo': usuario.activo, 'estado-inactivo': !usuario.activo}">
+              {{ usuario.activo ? 'Activo' : 'Inactivo' }}
+            </span>
+          </td>
+          <td class="acciones">
+            <button
+              *ngIf="usuario.activo"
+              class="btn btn-danger btn-sm"
+              (click)="desactivarUsuario(usuario.username)"
+              [disabled]="usuario.username === authService.currentUserValue.username"
+            >
+              Desactivar
+            </button>
+            <button
+              *ngIf="!usuario.activo"
+              class="btn btn-success btn-sm"
+              (click)="reactivarUsuario(usuario.username)"
+            >
+              Reactivar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div *ngIf="usuariosFiltrados.length === 0" class="no-usuarios">
+      <p>No se encontraron usuarios con los criterios seleccionados</p>
+    </div>
+  </div>
+</div>

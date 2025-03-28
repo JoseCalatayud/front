@@ -31,6 +31,11 @@
         <h3>Compras</h3>
         <p>Gestionar compras de productos</p>
       </div>
+      <div class="menu-card" *ngIf="isAdmin" [routerLink]="['/usuarios']">
+        <div class="icon">👥</div>
+        <h3>Usuarios</h3>
+        <p>Administrar usuarios del sistema</p>
+      </div>
     </div>
   </div>
 </div>
