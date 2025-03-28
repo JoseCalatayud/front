@@ -39,10 +39,14 @@ export class LoginComponent {
 
     this.authService.login(username, password)
       .subscribe({
-        next: () => {
-          this.router.navigate(['/dashboard']);
+        next: (response) => {
+          console.log('Respuesta login:', response);
+          this.loading = false;
+
+          // Para forzar un refresh completo y aplicar los roles correctamente
+          window.location.href = '/dashboard';
         },
-        error: error => {
+        error: (error) => {
           this.error = 'Usuario o contraseña incorrectos';
           this.loading = false;
         }

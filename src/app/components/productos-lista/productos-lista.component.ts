@@ -24,6 +24,7 @@ export class ProductosListaComponent implements OnInit {
   familias: string[] = [];
   cantidadSeleccionada: { [key: number]: number } = {};
   esContextoVentas: boolean = false;
+  username: string = '';
 
   constructor(
     private productoService: ProductoService,
@@ -34,19 +35,13 @@ export class ProductosListaComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.esContextoVentas = this.router.url.includes('/ventas/productos');
-    this.cargarUsuario();
-    this.cargarProductos();
-  }
-
-  cargarUsuario(): void {
     const user = this.authService.currentUserValue;
     if (user) {
-      this.isAdmin = user.roles && user.roles.some((role: any) =>
-        role.authority === 'ROLE_ADMIN' || role === 'ROLE_ADMIN');
-    } else {
-      this.router.navigate(['/login']);
+      this.username = user.username;
+      this.isAdmin = user.rol === 'ADMIN';
     }
+    this.esContextoVentas = this.router.url.includes('/ventas/productos');
+    this.cargarProductos();
   }
 
   cargarProductos(): void {

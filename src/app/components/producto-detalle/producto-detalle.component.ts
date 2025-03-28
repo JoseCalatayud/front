@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ProductoService, Producto } from '../../services/producto.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-producto-detalle',
@@ -14,14 +15,22 @@ export class ProductoDetalleComponent implements OnInit {
   producto: Producto | null = null;
   loading: boolean = true;
   error: string = '';
+  username: string = '';
+  isAdmin: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private productoService: ProductoService
+    private productoService: ProductoService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
+    const user = this.authService.currentUserValue;
+    if (user) {
+      this.username = user.username;
+      this.isAdmin = user.rol === 'ADMIN';
+    }
     this.cargarProducto();
   }
 

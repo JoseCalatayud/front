@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { JwtResponse } from '../models/jwt-response.model'; // Añade esta importación
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  //private apiUrl = 'http://localhost:8080'; // URL del backend
   private currentUserSubject: BehaviorSubject<any>;
   public currentUser: Observable<any>;
 
@@ -20,23 +20,37 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  login(username: string, password: string): Observable<any> {
-    // Crear el header para Auth Basic
-    const headers = new HttpHeaders({
-      'Authorization': 'Basic ' + btoa(username + ':' + password)
-    });
+  public get isAdmin(): boolean {
+    const isAdmin = this.currentUserValue && this.currentUserValue.rol === 'ADMIN';
+    console.log('Usuario actual:', this.currentUserValue);
+    console.log('¿Es administrador?:', isAdmin);
+    return isAdmin;
+  }
 
-    return this.http.post<any>(`/api/login`, {}, { headers })
+  login(username: string, password: string): Observable<any> {
+    return this.http.post<JwtResponse>('/api/auth/login', { username, password })
       .pipe(
-        tap(user => {
-          // Almacenar los datos del usuario y credenciales
+        tap(jwt => {
+          console.log('JWT respuesta:', jwt);
+
+          // Asegurarse de que el rol sea exactamente como se espera (eliminar espacios)
+          const rolNormalizado = jwt.rol.trim();
+
+          // Almacenar datos del usuario y token JWT
           const userData = {
-            username,
-            password,
-            ...user
+            username: jwt.username,
+            rol: rolNormalizado,
+            token: jwt.token
           };
+
+          console.log('Guardando en localStorage:', userData);
           localStorage.setItem('currentUser', JSON.stringify(userData));
           this.currentUserSubject.next(userData);
+
+          // Verificar después de establecer los datos
+          setTimeout(() => {
+            console.log('Verificación después de login - Es admin:', this.isAdmin);
+          }, 100);
         })
       );
   }
@@ -47,6 +61,6 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    return this.currentUserValue !== null;
+    return this.currentUserValue && this.currentUserValue.token;
   }
 }

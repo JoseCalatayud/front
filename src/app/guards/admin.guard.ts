@@ -6,16 +6,17 @@ export const AdminGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  const currentUser = authService.currentUserValue;
-
-  // Verificar si el usuario es admin
-  if (currentUser && currentUser.roles &&
-      currentUser.roles.some((role: any) =>
-        role.authority === 'ROLE_ADMIN' || role === 'ROLE_ADMIN')) {
+  // Usar directamente la propiedad isAdmin del servicio
+  if (authService.isAdmin) {
     return true;
   }
 
-  // No es admin, redirigir al menú de productos
-  router.navigate(['/productos']);
-  return false; // Añadir esta línea para solucionar el error
+  // Alternativamente, si prefieres la lógica explícita:
+  // if (authService.currentUserValue && authService.currentUserValue.rol === 'ADMIN') {
+  //   return true;
+  // }
+
+  // No es admin, redirigir al Dashboard o productos
+  router.navigate(['/dashboard']);
+  return false;
 };

@@ -9,10 +9,13 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
   const currentUser = authService.currentUserValue;
 
-  if (currentUser && currentUser.username && currentUser.password) {
+  console.log('Interceptor ejecutándose', currentUser);
+
+  if (currentUser && currentUser.token) {
+    console.log('Agregando token al header:', `Bearer ${currentUser.token}`);
     req = req.clone({
       setHeaders: {
-        Authorization: `Basic ${btoa(currentUser.username + ':' + currentUser.password)}`
+        Authorization: `Bearer ${currentUser.token}`
       }
     });
   }

@@ -24,8 +24,13 @@ export class DashboardComponent implements OnInit {
     }
 
     this.username = user.username;
-    this.isAdmin = user.roles && user.roles.some((role: any) =>
-      role.authority === 'ROLE_ADMIN' || role === 'ROLE_ADMIN');
+
+    // Cambiar esta línea - el rol ahora es una propiedad directa
+    this.isAdmin = user.rol === 'ADMIN';
+
+    // Depuración
+    console.log('Usuario en Dashboard:', user);
+    console.log('¿Es admin?:', this.isAdmin);
   }
 
   logout(): void {

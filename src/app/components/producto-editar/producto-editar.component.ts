@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ProductoService, Producto } from '../../services/producto.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-producto-editar',
@@ -18,12 +19,15 @@ export class ProductoEditarComponent implements OnInit {
   id: number;
   familias = ['Informática', 'Electrónica', 'Telefonía', 'Audio/Video', 'Accesorios'];
   producto: Producto | null = null;
+  username: string | undefined;
+  isAdmin: boolean | undefined;
 
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private productoService: ProductoService
+    private productoService: ProductoService,
+    private authService: AuthService
   ) {
     this.id = Number(this.route.snapshot.paramMap.get('id'));
     this.productoForm = this.formBuilder.group({
@@ -36,6 +40,11 @@ export class ProductoEditarComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const user = this.authService.currentUserValue;
+    if (user) {
+      this.username = user.username;
+      this.isAdmin = user.rol === 'ADMIN';
+    }
     this.cargarProducto();
   }
 
