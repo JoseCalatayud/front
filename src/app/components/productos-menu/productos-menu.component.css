@@ -6,7 +6,7 @@
 }
 
 .menu-header {
-  background-color: #343a40;
+  background-color: #1836b2;
   color: white;
   padding: 1rem 2rem;
   display: flex;
@@ -38,6 +38,8 @@
 .menu-content {
   padding: 2rem;
   flex-grow: 1;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .menu-content h2 {
@@ -56,9 +58,11 @@
 
 .menu-card {
   background-color: white;
-  padding: 2rem;
+  border: 1px solid rgb(148, 148, 148);
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  padding: 2rem;
+  text-align: center;
   cursor: pointer;
   transition: transform 0.3s, box-shadow 0.3s;
   display: flex;

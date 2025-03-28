@@ -1,8 +1,11 @@
 <!-- src/app/components/compras-menu/compras-menu.component.html -->
-<div class="menu-container">
+<div class="productos-menu">
   <header class="menu-header">
     <h1>Gestión de Compras</h1>
-    <button class="btn btn-secondary" routerLink="/dashboard">Volver al Dashboard</button>
+    <div class="user-info">
+      <span>Usuario: {{username}}</span>
+      <button class="back-btn" routerLink="/dashboard">Volver al Panel</button>
+    </div>
   </header>
 
   <div class="menu-content">

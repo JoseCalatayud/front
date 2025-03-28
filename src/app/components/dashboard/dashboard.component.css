@@ -6,7 +6,7 @@
 }
 
 .dashboard-header {
-  background-color: #343a40;
+  background-color: #1836b2;
   color: white;
   padding: 1rem 2rem;
   display: flex;
@@ -38,6 +38,8 @@
 .dashboard-content {
   padding: 2rem;
   flex-grow: 1;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .dashboard-content h2 {
@@ -48,16 +50,19 @@
 
 .menu-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  justify-content: center;
+  grid-template-columns: repeat(3, 1fr); /* Siempre 3 columnas */
   gap: 2rem;
   margin-top: 2rem;
 }
 
 .menu-card {
   background-color: white;
-  padding: 2rem;
+  border: 1px solid rgb(148, 148, 148);
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  padding: 2rem;
+  text-align: center;
   cursor: pointer;
   transition: transform 0.3s, box-shadow 0.3s;
   display: flex;
@@ -83,4 +88,28 @@
 
 .menu-card p {
   color: #6c757d;
+}
+
+/* Ajusta para pantallas muy pequeñas */
+@media (max-width: 768px) {
+  .menu-cards {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem; /* Menos espacio en pantallas pequeñas */
+  }
+
+  .menu-card {
+    padding: 1rem;
+  }
+
+  .menu-card h3 {
+    font-size: 1rem;
+  }
+
+  .menu-card p {
+    font-size: 0.8rem;
+  }
+
+  .icon {
+    font-size: 2rem;
+  }
 }

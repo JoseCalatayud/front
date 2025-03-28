@@ -3,22 +3,32 @@
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f8f9fa;
 }
 
 .productos-header {
+  background-color: #1836b2;
+  color: white;
+  padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   margin-bottom: 20px;
 }
 
 .filtros-container {
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
   gap: 15px;
-  background-color: #f8f9fa;
+  background-color: #dadada;
   padding: 15px;
   border-radius: 8px;
+  margin-top: 10px;
   margin-bottom: 20px;
 }
 
@@ -54,9 +64,9 @@
 }
 
 .btn-outline-secondary {
-  background-color: transparent;
-  border: 1px solid #6c757d;
-  color: #6c757d;
+  background-color: #007bff;
+  color: white;
+  align-content: end;
 }
 
 .loading-container {
@@ -80,6 +90,7 @@
 }
 
 .producto-card {
+  border: 1px solid rgb(148, 148, 148);
   background-color: white;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);

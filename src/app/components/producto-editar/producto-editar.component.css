@@ -1,14 +1,23 @@
 /* src/app/components/producto-editar/producto-editar.component.css */
+.producto-crear-container,
 .producto-editar-container {
   padding: 20px;
   max-width: 800px;
   margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f8f9fa;
 }
 
 .producto-header {
+  background-color: #1836b2;
+  color: white;
+  padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   margin-bottom: 20px;
 }
 
@@ -28,6 +37,7 @@
 
 .producto-form {
   background-color: white;
+  border: 1px solid rgb(148, 148, 148);
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
