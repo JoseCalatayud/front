@@ -19,6 +19,7 @@ import { AdminGuard } from './guards/admin.guard';
 import { UsuarioMenuComponent } from './components/usuario-menu/usuario-menu.component';
 import { UsuarioListaComponent } from './components/usuario-lista/usuario-lista.component';
 import { UsuarioCrearComponent } from './components/usuario-crear/usuario-crear.component';
+import { EstadisticasComponent } from './components/estadisticas/estadisticas.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -115,6 +116,13 @@ export const routes: Routes = [
     path: 'usuarios/crear',
     component: UsuarioCrearComponent,
     canActivate: [AuthGuard, AdminGuard]
+  },
+
+  // Ruta para estadísticas
+  {
+    path: 'estadisticas',
+    component: EstadisticasComponent,
+    canActivate: [AuthGuard]  // Accesible para todos los usuarios autenticados
   },
 
   { path: '', redirectTo: '/login', pathMatch: 'full' },

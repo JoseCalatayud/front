@@ -1,0 +1,187 @@
+<!-- src/app/components/estadisticas/estadisticas.component.html -->
+<div class="estadisticas-container">
+  <header class="estadisticas-header">
+    <h1>Dashboard de Estadísticas</h1>
+    <button class="btn btn-secondary" (click)="volver()">Volver</button>
+  </header>
+
+  <!-- Filtros de fecha -->
+  <div class="filtros-container">
+    <div class="filtro-fecha">
+      <label for="fechaInicio">Desde:</label>
+      <input
+        type="date"
+        id="fechaInicio"
+        class="form-control"
+        [(ngModel)]="filtroFechaInicio"
+      >
+    </div>
+    <div class="filtro-fecha">
+      <label for="fechaFin">Hasta:</label>
+      <input
+        type="date"
+        id="fechaFin"
+        class="form-control"
+        [(ngModel)]="filtroFechaFin"
+      >
+    </div>
+    <div class="filtro-botones">
+      <button class="btn btn-primary" (click)="filtrarEstadisticas()">Filtrar</button>
+      <button class="btn btn-outline-secondary" (click)="limpiarFiltros()">Limpiar</button>
+    </div>
+  </div>
+
+  <!-- Indicador de carga -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+    <p>Cargando estadísticas...</p>
+  </div>
+
+  <!-- Mensaje de error -->
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <div class="dashboard-grid" *ngIf="!loading">
+    <!-- Productos más vendidos -->
+    <div class="card estadistica-card">
+      <div class="card-header">
+        <h3>Top Productos Más Vendidos</h3>
+      </div>
+      <div class="card-body">
+        <table class="tabla-estadisticas">
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Cantidad</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let producto of productosMasVendidos.slice(0, 10)">
+              <td>{{ producto.nombre }}</td>
+              <td class="cantidad">{{ producto.cantidadVendida }}</td>
+              <td class="total">{{ producto.totalVendido | currency:'EUR':'symbol':'1.2-2' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Mejores vendedores (solo admin) -->
+    <div class="card estadistica-card" *ngIf="isAdmin">
+      <div class="card-header">
+        <h3>Mejores Vendedores</h3>
+      </div>
+      <div class="card-body">
+        <table class="tabla-estadisticas">
+          <thead>
+            <tr>
+              <th>Vendedor</th>
+              <th>Ventas</th>
+              <th>Productos</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let vendedor of mejoresVendedores">
+              <td>{{ vendedor.username }}</td>
+              <td class="cantidad">{{ vendedor.cantidadVentas }}</td>
+              <td class="cantidad">{{ vendedor.cantidadProductos }}</td>
+              <td class="total">{{ vendedor.totalVendido | currency:'EUR':'symbol':'1.2-2' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Ventas por mes -->
+    <div class="card estadistica-card">
+      <div class="card-header">
+        <h3>Ventas por Mes</h3>
+        <div class="filtro-inline">
+          <label for="year">Año:</label>
+          <select
+            id="year"
+            class="form-control"
+            [(ngModel)]="filtroYear"
+            (change)="cambiarAno()"
+          >
+            <option *ngFor="let year of anios" [value]="year">{{ year }}</option>
+          </select>
+        </div>
+      </div>
+      <div class="card-body">
+        <table class="tabla-estadisticas">
+          <thead>
+            <tr>
+              <th>Mes</th>
+              <th>Ventas</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let mes of ventasPorMes">
+              <td>{{ mes.nombreMes }}</td>
+              <td class="cantidad">{{ mes.cantidadVentas }}</td>
+              <td class="total">{{ mes.totalVendido | currency:'EUR':'symbol':'1.2-2' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Producto Estrella del Mes -->
+    <div class="card estadistica-card">
+      <div class="card-header">
+        <h3>Producto Estrella del Mes</h3>
+        <div class="filtros-inline">
+          <div class="filtro-inline">
+            <label for="month">Mes:</label>
+            <select
+              id="month"
+              class="form-control"
+              [(ngModel)]="filtroMonth"
+              (change)="cambiarMes()"
+            >
+              <option *ngFor="let mes of meses" [value]="mes.value">{{ mes.nombre }}</option>
+            </select>
+          </div>
+          <div class="filtro-inline">
+            <label for="yearEstrella">Año:</label>
+            <select
+              id="yearEstrella"
+              class="form-control"
+              [(ngModel)]="filtroYear"
+              (change)="cambiarMes()"
+            >
+              <option *ngFor="let year of anios" [value]="year">{{ year }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="card-body producto-estrella">
+        <div *ngIf="productoEstrella && productoEstrella.id" class="producto-info">
+          <h4>{{ productoEstrella.nombre }}</h4>
+          <p class="codigo">Código: {{ productoEstrella.codigoBarras }}</p>
+          <p class="familia">Familia: {{ productoEstrella.familia }}</p>
+          <div class="stats">
+            <div class="stat">
+              <span class="label">Cantidad vendida:</span>
+              <span class="valor">{{ productoEstrella.cantidadVendida }}</span>
+            </div>
+            <div class="stat">
+              <span class="label">Total vendido:</span>
+              <span class="valor">{{ productoEstrella.totalVendido | currency:'EUR':'symbol':'1.2-2' }}</span>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="!productoEstrella || !productoEstrella.id" class="no-data">
+          No hay datos de ventas para este mes
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
