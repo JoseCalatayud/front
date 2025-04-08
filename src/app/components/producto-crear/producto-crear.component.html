@@ -76,13 +76,19 @@
     </div>
 
     <div class="form-group">
-      <label for="fotografia">URL de la fotografía</label>
-      <input
-        type="text"
-        id="fotografia"
-        formControlName="fotografia"
-        class="form-control"
-      >
+      <label for="fotografia">Fotografía del producto</label>
+      <div class="custom-file-upload">
+        <input
+          type="file"
+          id="fotografia"
+          accept="image/*"
+          (change)="onFileSelect($event)"
+          class="form-control"
+        >
+      </div>
+      <div *ngIf="previewUrl" class="image-preview">
+        <img [src]="previewUrl" alt="Vista previa">
+      </div>
     </div>
 
     <div class="form-group">

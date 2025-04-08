@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ProductoService, Producto } from '../../services/producto.service';
 import { AuthService } from '../../services/auth.service';
+import { FileUploadService } from '../../services/file-upload.service';
 
 @Component({
   selector: 'app-producto-editar',
@@ -21,13 +22,16 @@ export class ProductoEditarComponent implements OnInit {
   producto: Producto | null = null;
   username: string | undefined;
   isAdmin: boolean | undefined;
+  selectedFile: File | null = null;
+  previewUrl: string | null = null;
 
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private productoService: ProductoService,
-    private authService: AuthService
+    private authService: AuthService,
+    private fileUploadService: FileUploadService
   ) {
     this.id = Number(this.route.snapshot.paramMap.get('id'));
     this.productoForm = this.formBuilder.group({
@@ -60,6 +64,12 @@ export class ProductoEditarComponent implements OnInit {
           fotografia: producto.fotografia,
           precioVenta: producto.precioVenta
         });
+
+        // Si hay una fotografía, mostrarla en la vista previa
+        if (producto.fotografia) {
+          this.previewUrl = producto.fotografia;
+        }
+
         this.loading = false;
       },
       error: (error) => {
@@ -70,6 +80,19 @@ export class ProductoEditarComponent implements OnInit {
     });
   }
 
+  onFileSelect(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
+
+      const reader = new FileReader();
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        this.previewUrl = e.target?.result as string;
+      };
+      reader.readAsDataURL(this.selectedFile);
+    }
+  }
+
   onSubmit(): void {
     if (this.productoForm.invalid || !this.producto) {
       return;
@@ -78,6 +101,25 @@ export class ProductoEditarComponent implements OnInit {
     this.loading = true;
     this.error = '';
 
+    if (this.selectedFile) {
+      // Corregir el método a llamar - usar uploadProductImage en lugar de uploadFile
+      this.fileUploadService.uploadProductImage(this.selectedFile).subscribe({
+        next: (imagePath: string) => {
+          this.productoForm.patchValue({ fotografia: imagePath });
+          this.actualizarProducto();
+        },
+        error: (error: any) => {
+          this.error = 'Error al subir la imagen: ' + (error.message || 'Error desconocido');
+          this.loading = false;
+          console.error('Error al subir imagen:', error);
+        }
+      });
+    } else {
+      this.actualizarProducto();
+    }
+  }
+
+  actualizarProducto(): void {
     this.productoService.actualizarProducto(this.id, this.productoForm.value)
       .subscribe({
         next: () => {

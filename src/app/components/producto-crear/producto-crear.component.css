@@ -270,3 +270,21 @@ label {
   color: #212529;
   white-space: pre-line;
 }
+
+.image-preview {
+  margin-top: 10px;
+  max-width: 300px;
+  border: 1px solid #ced4da;
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.image-preview img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.custom-file-upload {
+  margin-bottom: 10px;
+}

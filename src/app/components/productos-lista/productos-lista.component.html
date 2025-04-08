@@ -66,7 +66,7 @@
 
     <div *ngFor="let producto of productosFiltrados" class="producto-card">
       <div class="producto-imagen">
-        <img [src]="producto.fotografia || 'assets/no-image.png'" alt="{{ producto.nombre }}">
+        <img [src]="producto.fotografia | imageUrl" alt="{{ producto.nombre }}" class="card-img-top">
       </div>
 
       <div class="producto-contenido">

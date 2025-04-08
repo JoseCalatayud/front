@@ -21,7 +21,7 @@
   <div *ngIf="!loading && !error && producto" class="producto-card">
     <div class="producto-contenido">
       <div class="producto-imagen">
-        <img [src]="producto.fotografia || 'assets/no-image.png'" alt="{{ producto.nombre }}">
+        <img [src]="producto.fotografia | imageUrl" alt="{{ producto.nombre }}" class="img-fluid">
       </div>
 
       <div class="producto-info">
@@ -49,7 +49,7 @@
           </span>
         </div>
 
-        
+
         <div class="detalle-item estado">
           <span class="label">Estado:</span>
           <span class="valor" [ngClass]="{'activo': !producto.borrado, 'inactivo': producto.borrado}">

@@ -44,7 +44,7 @@
           <tr *ngFor="let item of items">
             <td class="producto-info">
               <div class="producto-imagen">
-                <img [src]="item.producto.fotografia || 'assets/no-image.png'" alt="{{ item.producto.nombre }}">
+                <img [src]="item.producto.fotografia | imageUrl" alt="{{ item.producto.nombre }}" class="img-thumbnail">
               </div>
               <div class="producto-detalles">
                 <h3>{{ item.producto.nombre }}</h3>

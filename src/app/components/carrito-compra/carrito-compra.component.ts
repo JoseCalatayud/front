@@ -3,11 +3,12 @@ import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CarritoCompraService, ItemCarritoCompra } from '../../services/carrito-compra.service';
+import { ImageUrlPipe } from '../../pipes/image-url.pipe';
 
 @Component({
   selector: 'app-carrito-compra',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule, ImageUrlPipe],  // Añadir ImageUrlPipe
   templateUrl: './carrito-compra.component.html',
   styleUrls: ['./carrito-compra.component.css']
 })

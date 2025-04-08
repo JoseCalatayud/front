@@ -5,11 +5,12 @@ import { FormsModule } from '@angular/forms';
 import { ProductoService, Producto } from '../../services/producto.service';
 import { AuthService } from '../../services/auth.service';
 import { CarritoService } from '../../services/carrito.service';
+import { ImageUrlPipe } from '../../pipes/image-url.pipe';
 
 @Component({
   selector: 'app-productos-lista',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule, ImageUrlPipe],  // Añadir ImageUrlPipe aquí
   templateUrl: './productos-lista.component.html',
   styleUrls: ['./productos-lista.component.css']
 })
@@ -25,6 +26,7 @@ export class ProductosListaComponent implements OnInit {
   cantidadSeleccionada: { [key: number]: number } = {};
   esContextoVentas: boolean = false;
   username: string = '';
+  noImagePath = '/assets/no-image.png';
 
   constructor(
     private productoService: ProductoService,
